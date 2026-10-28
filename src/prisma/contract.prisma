@@ -1,0 +1,12 @@
+// use prisma-8
+
+model User {
+  id        String   @unique
+  name      String
+  roleId    Int
+}
+
+model Role {
+  id        Int      @unique
+  title     String
+}

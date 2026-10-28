@@ -1,0 +1,29 @@
+{
+  "name": "node_api",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "app.ts",
+  "scripts": {
+    "dev": "node --watch ./app.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "contract:emit": "prisma contract emit"
+  },
+  "dependencies": {
+    "@prisma/orm-postgres": "^8.0.0-rc.18",
+    "dotenv": "^18.0.8",
+    "express": "^5.2.1",
+    "mysql2": "^3.24.5",
+    "uuid": "^14.0.2"
+  },
+  "devDependencies": {
+    "@prisma/cli-engine": "^0.9.0",
+    "@types/express": "^5.0.6",
+    "@types/node": "^22.20.3",
+    "prisma": "^8.0.0-rc.24",
+    "ts-node": "^10.9.2",
+    "typescript": "^7.0.2"
+  }
+}
