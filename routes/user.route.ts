@@ -59,8 +59,8 @@ userRouter.post('/', async(req: Request, res: Response) => {
 })
 
 
-userRouter.delete('/', async(req: Request, res: Response) => {
-    const ret =  await userPrismaService.purge()
+userRouter.delete('/purge', async(req: Request, res: Response) => {
+    const ret = await userPrismaService.purge()
     return res.status(200).send(ret)
 })
 
