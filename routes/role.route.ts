@@ -7,6 +7,7 @@ const roleRouter = express.Router();
 roleRouter.get('/', async(req: Request, res: Response) => {
     try{
         const roles: IRole[] = await rolePrismaService.getAll()
+        if(roles.length == 0) return res.sendStatus(404)
         return res.status(200).send(roles);
     }catch(err){
         console.error(err)
@@ -42,6 +43,16 @@ roleRouter.post('/', async(req: Request, res: Response) => {
             title: body.title
         })
         return res.status(201).send(role)
+    }catch(err) {
+        console.error(err)
+        return res.sendStatus(500)
+    }
+})
+
+roleRouter.delete('/purge', async(req: Request, res: Response) => {
+    try{
+        const ret: IRole[] = await rolePrismaService.purge()
+        return res.sendStatus(ret.length == 0 ? 404 : 204)
     }catch(err) {
         console.error(err)
         return res.sendStatus(500)
