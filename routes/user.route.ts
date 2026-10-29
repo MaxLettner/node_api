@@ -52,7 +52,7 @@ userRouter.post('/', async(req: Request, res: Response) => {
             roleId: body.roleId
         })
         if(created){
-            return res.status(200).send(created)
+            return res.status(201).send(created)
         }
         return res.status(400).send('User could not be created!')
     } catch(err) {
@@ -65,10 +65,7 @@ userRouter.post('/', async(req: Request, res: Response) => {
 userRouter.delete('/purge', async(req: Request, res: Response) => {
     try{
         const ret = await userPrismaService.purge()
-        if(ret.length == 0) {
-            return res.sendStatus(404)
-        }
-        return res.status(204).send('Successfully purged')
+        return res.sendStatus(ret.length == 0 ? 404 : 204)
     }catch(err) {
         console.error(err)
         return res.sendStatus(500)
