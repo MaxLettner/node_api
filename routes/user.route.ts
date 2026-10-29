@@ -101,7 +101,7 @@ userRouter.delete('/:id', async (req: Request, res: Response) => {
     const id: string = req.params.id as string
  
     try {
-        const deleted = await userDbService.deleteUser(id)
+        const deleted: IUser|null = await userPrismaService.deleteUser(id)
         return res.sendStatus(deleted ? 204 : 404)
     } catch (err) {
         console.error(err)

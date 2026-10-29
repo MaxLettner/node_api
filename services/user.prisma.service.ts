@@ -25,6 +25,10 @@ export const updateUser = async(id: string, user: IUser): Promise<IUser|null> =>
     })
 }
 
+export const deleteUser = async(id: string): Promise<IUser|null> => {
+    return await db.orm.public.User.where({id:id}).delete()
+}
+
 export const purge = async(): Promise<IUser[]> => {
     return await db.orm.public.User.where(u => u.id.isNotNull()).deleteAll()
 }
