@@ -41,7 +41,7 @@ roleRouter.post('/', async(req: Request, res: Response) => {
             id: body.id,
             title: body.title
         })
-        return res.status(200).send(role)
+        return res.status(201).send(role)
     }catch(err) {
         console.error(err)
         return res.sendStatus(500)
