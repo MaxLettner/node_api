@@ -22,6 +22,15 @@ export const createUser = async(user: IUser): Promise<IUser> => {
     return res
 }
 
+export const updateUser = async(id: string, user: IUser): Promise<IUser|null> => {
+    const updated = await db.orm.public.User.where({id: id}).update({
+        name: user.name,
+        roleId: user.roleId
+    })
+
+    return updated
+}
+
 export const purge = async() => {
     
 }

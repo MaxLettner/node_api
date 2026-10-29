@@ -64,45 +64,25 @@ userRouter.delete('/purge', async(req: Request, res: Response) => {
     return res.status(200).send(ret)
 })
 
-/*
-userRouter.post('/', async (req: Request, res: Response) => {
-    const body = req.body as Partial<UserIF> | undefined;
- 
-    if (!body?.name || !body?.roleId) {
-        return res.status(400).send('Invalid user');
+
+userRouter.put('/:id', async(req: Request, res: Response) => {
+    const id = req.params.id as string
+    const body = req.body as Partial<IUser> | undefined
+    if(!body?.name || !body?.roleId) {
+        return res.status(400).send('Invalid User')
     }
- 
-    try {
-        const created = await userDbService.createUser({
-            id: body.id, 
+
+    try{
+        const updated = await userPrismaService.updateUser(id, {
             name: body.name,
-            roleId: body.roleId,
+            roleId: body.roleId
         })
-        return res.status(201).send(created)
-    } catch (err) {
-        console.error(err)
-        return res.sendStatus(500)
-    }
-})*/
 
-
-userRouter.put('/', async (req: Request, res: Response) => {
-    const user = req.body as IUser | undefined
- 
-    if (!user?.id) {
-        return res.status(400).send('Missing id')
-    }
-    if (!user.name || !user.roleId) {
-        return res.status(400).send('Invalid user')
-    }
- 
-    try {
-        const updated = await userDbService.updateUser(user)
-        if (!updated) {
+        if(!updated) {
             return res.status(404).send('User does not exist')
         }
-        return res.status(200).send(user)
-    } catch (err) {
+        return res.status(201).send(updated)
+    }catch(err){
         console.error(err)
         return res.sendStatus(500)
     }

@@ -9,7 +9,7 @@ roleRouter.get('/', async(req: Request, res: Response) => {
         const roles = await rolePrismaService.getAll()
         return res.status(200).send(roles);
     }catch(err){
-        console.log(err)
+        console.error(err)
         return res.sendStatus(500)
     }
 });
@@ -24,14 +24,14 @@ roleRouter.get('/:id', async(req: Request, res: Response) => {
         }
         return res.status(200).send(role)
     }catch(err){
-        console.log(err)
+        console.error(err)
         return res.sendStatus(500)
     }
     
 })
 
 roleRouter.post('/', async(req: Request, res: Response) => {
-    const body = req.body as Partial<IRole>
+    const body = req.body as Partial<IRole> | undefined
     if(!body?.id || !body?.title) {
         return res.status(400).send('Bad Request')
     }
