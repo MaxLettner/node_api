@@ -14,6 +14,9 @@ const userRouter = express.Router();
 userRouter.get('/', async (req: Request, res: Response) => {
     try {
         const users = await userPrismaService.getAll()
+        if(users.length == 0) {
+            return res.sendStatus(404)
+        }
         return res.status(200).send(users)
     } catch (err) {
         console.error(err)
@@ -28,7 +31,7 @@ userRouter.get('/:id', async (req: Request, res: Response) => {
     try {
         const user = await userPrismaService.get(id)
         if (!user) {
-            return res.status(404).send('User does not exist')
+            return res.sendStatus(404)
         }
         return res.status(200).send(user)
     } catch(err) {
@@ -60,8 +63,16 @@ userRouter.post('/', async(req: Request, res: Response) => {
 
 
 userRouter.delete('/purge', async(req: Request, res: Response) => {
-    const ret = await userPrismaService.purge()
-    return res.status(200).send(ret)
+    try{
+        const ret = await userPrismaService.purge()
+        if(ret.length == 0) {
+            return res.sendStatus(404)
+        }
+        return res.status(204).send('Successfully purged')
+    }catch(err) {
+        console.error(err)
+        return res.sendStatus(500)
+    }
 })
 
 

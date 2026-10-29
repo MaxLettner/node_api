@@ -31,6 +31,7 @@ export const updateUser = async(id: string, user: IUser): Promise<IUser|null> =>
     return updated
 }
 
-export const purge = async() => {
-    
+export const purge = async(): Promise<IUser[]> => {
+    const stat = await db.orm.public.User.where(u => u.id.isNotNull()).deleteAll()
+    return stat
 }
