@@ -13,7 +13,7 @@ const userRouter = express.Router();
 
 userRouter.get('/', async (req: Request, res: Response) => {
     try {
-        const users = await userPrismaService.getAll()
+        const users: IUser[] = await userPrismaService.getAll()
         if(users.length == 0) {
             return res.sendStatus(404)
         }
@@ -26,10 +26,10 @@ userRouter.get('/', async (req: Request, res: Response) => {
 
 
 userRouter.get('/:id', async (req: Request, res: Response) => {
-    const id = req.params.id as string
+    const id: string = req.params.id as string
  
     try {
-        const user = await userPrismaService.get(id)
+        const user: IUser|null = await userPrismaService.get(id)
         if (!user) {
             return res.sendStatus(404)
         }
@@ -41,13 +41,13 @@ userRouter.get('/:id', async (req: Request, res: Response) => {
 })
 
 userRouter.post('/', async(req: Request, res: Response) => {
-    const body = req.body as Partial<IUser> | undefined
+    const body: Partial<IUser>|undefined = req.body as Partial<IUser>|undefined
     if(!body?.name || !body?.roleId) {
         return res.status(400).send('Invalid User')
     }
 
     try {
-        const created = await userPrismaService.createUser({
+        const created: IUser = await userPrismaService.createUser({
             name: body.name,
             roleId: body.roleId
         })
@@ -64,7 +64,7 @@ userRouter.post('/', async(req: Request, res: Response) => {
 
 userRouter.delete('/purge', async(req: Request, res: Response) => {
     try{
-        const ret = await userPrismaService.purge()
+        const ret: IUser[] = await userPrismaService.purge()
         return res.sendStatus(ret.length == 0 ? 404 : 204)
     }catch(err) {
         console.error(err)
@@ -74,14 +74,14 @@ userRouter.delete('/purge', async(req: Request, res: Response) => {
 
 
 userRouter.put('/:id', async(req: Request, res: Response) => {
-    const id = req.params.id as string
-    const body = req.body as Partial<IUser> | undefined
+    const id: string = req.params.id as string
+    const body: Partial<IUser>|undefined = req.body as Partial<IUser>|undefined
     if(!body?.name || !body?.roleId) {
         return res.status(400).send('Invalid User')
     }
 
     try{
-        const updated = await userPrismaService.updateUser(id, {
+        const updated: IUser|null = await userPrismaService.updateUser(id, {
             name: body.name,
             roleId: body.roleId
         })
@@ -98,7 +98,7 @@ userRouter.put('/:id', async(req: Request, res: Response) => {
 
 
 userRouter.delete('/:id', async (req: Request, res: Response) => {
-    const id = req.params.id as string
+    const id: string = req.params.id as string
  
     try {
         const deleted = await userDbService.deleteUser(id)

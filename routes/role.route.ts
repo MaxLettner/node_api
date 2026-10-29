@@ -6,7 +6,7 @@ const roleRouter = express.Router();
 
 roleRouter.get('/', async(req: Request, res: Response) => {
     try{
-        const roles = await rolePrismaService.getAll()
+        const roles: IRole[] = await rolePrismaService.getAll()
         return res.status(200).send(roles);
     }catch(err){
         console.error(err)
@@ -15,10 +15,10 @@ roleRouter.get('/', async(req: Request, res: Response) => {
 });
 
 roleRouter.get('/:id', async(req: Request, res: Response) => {
-    const id = req.params.id as unknown as number
+    const id: number = req.params.id as unknown as number
 
     try{
-        const role = await rolePrismaService.get(id)
+        const role: IRole|null = await rolePrismaService.get(id)
         if(!role) {
             return res.status(404).send('User does not exist')
         }
@@ -31,13 +31,13 @@ roleRouter.get('/:id', async(req: Request, res: Response) => {
 })
 
 roleRouter.post('/', async(req: Request, res: Response) => {
-    const body = req.body as Partial<IRole> | undefined
+    const body: Partial<IRole>|undefined = req.body as Partial<IRole>|undefined
     if(!body?.id || !body?.title) {
         return res.status(400).send('Bad Request')
     }
     
     try {
-        const role = await rolePrismaService.create({
+        const role: IRole = await rolePrismaService.create({
             id: body.id,
             title: body.title
         })
